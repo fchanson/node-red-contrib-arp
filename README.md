@@ -31,5 +31,7 @@ It is possible to filter the results by MAC address :<br>
 - in the node configuration, by providing MAC address (separated by commas if multiple).
 - in the input **msg.payload.macs** message string, by providing MAC address (separated by commas if multiple).
 
+### License 
 
+MIT License
      
