@@ -1,7 +1,7 @@
 # node-red-contrib-arp
 
-This node provides the content of the ARP table, **ONLY on Raspberry Pi**.<br>
-It returns the mapping of the network address (IP address) to a physical address (MAC address) of the devices which are connected to the same LAN that the Raspberry Pi.
+This node provides the content of the ARP table.<br>
+It returns the mapping of the network address (IP address) to a physical address (MAC address) of the devices which are connected to the same LAN.
 
 ### Install
 
@@ -18,13 +18,13 @@ in the Node-red, Manage palette, Install node-red-contrib-arp
 ### Usage
 
 
-This node provides the content of the ARP table, **ONLY on Raspberry Pi**.
+This node provides the content of the ARP table.
 
 The output **msg.payload** is an array of objects containing : <br>
 
 - ip : the IP address of the device.
 - mac : the MAC address of the device.
-- iface : the network interface of the Raspberry Pi.
+- iface : the network interface of the device.
 
 It is possible to filter the results by MAC address :<br>
 

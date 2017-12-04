@@ -1,7 +1,7 @@
 {
   "name": "node-red-contrib-arp",
-  "version": "0.0.1",
-  "description": "This node provides the content of the ARP table, ONLY on Raspberry Pi",
+  "version": "0.0.2",
+  "description": "This node provides the content of the ARP table",
   "dependencies": {
 
   },
@@ -11,8 +11,7 @@
   },
   "keywords": [
                "node-red",
-               "arp",
-               "rapsberrypi"
+               "arp"
   ],
   "node-red"     : {
       "nodes": {

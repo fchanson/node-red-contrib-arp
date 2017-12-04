@@ -10,13 +10,13 @@
 </script>
 
 <script type="text/x-red" data-help-name="arp">
-    <p>This node provides the content of the ARP table, <b>ONLY on Raspberry Pi</b>.</p>
-	<p>It returns the mapping of the network address (IP address) to a physical address (MAC address) of the devices which are connected to the same LAN that the Raspberry Pi.</p>
+    <p>This node provides the content of the ARP table.</p>
+	<p>It returns the mapping of the network address (IP address) to a physical address (MAC address) of the devices which are connected to the same LAN.</p>
 	<p>The output <b>msg.payload</b> is an array of objects containing : </p>
  	<ul>
         <li>ip : the IP address of the device.</li>
         <li>mac : the MAC address of the device.</li>
-        <li>iface : the network interface of the Raspberry Pi.</li>
+        <li>iface : the network interface of the device.</li>
     </ul>
 	<p>It is possible to filter the results by MAC address :</p>
  	<ul>
