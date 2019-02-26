@@ -54,7 +54,7 @@ module.exports = function(RED) {
 				});
 				
 				var execF = new PromiseFunc();
-				execF.execCommand('arp -n').then(function(res) {
+				execF.execCommand('arp -a').then(function(res) {
 					node.status({fill:"green",shape:"dot",text:"finished"});
 					if(res && res.length>0) {
 						var json = [];
