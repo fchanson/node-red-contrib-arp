@@ -4,6 +4,8 @@ module.exports = function(RED) {
 	const os = require("os");
 	const exec = require("child_process").exec;
 
+	const macMatcher = /([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})/;
+	
 	function PromiseFunc() {
 		this.execCommand = function(cmd) {
 			return new Promise(function(resolve, reject) {
@@ -51,58 +53,52 @@ module.exports = function(RED) {
 					});
 
 				});
-
+				
 				const execF = new PromiseFunc();
 				execF.execCommand("arp -n").then(function(res) {
 					node.status({ fill: "green", shape: "dot", text: "finished" });
-					if (res && res.length > 0) {
-						const json = [];
-						const lines = res.split('\n');
 
-						for (const i in lines) {
-							if (i == 0) continue;
-							if (lines[i].indexOf("incomplete") < 0) {
-								const cols = lines[i].split(" ");
-								let ip = "";
-								let mac = "";
-								let iface = "";
+					if (res && res.length) {
+						const arpEntries = [];
+						const lines = res.split("\n");
 
-								for (const j in cols) {
-									if (cols[j].indexOf(".") >= 0) {
-										ip = cols[j];
-										continue;
-									}
-									if (cols[j].indexOf(':') >= 0) {
-										mac = cols[j];
-										continue;
-									}
-									if (j == cols.length - 1) {
-										iface = cols[j];
-										continue;
-									}
+						for (const line of lines) {
+							if (!macMatcher.test(line)) continue;
+							
+							const cols = line.split(" ");
+							let ip = "";
+							let mac = "";
+							let iface = "";
+
+							for (const col of cols) {
+								if (col.includes(".")) {
+									ip = col;
+									continue;
 								}
+								if (col.includes(":")) {
+									mac = col;
+									continue;
+								}
+								if (cols.indexOf(col) === cols.length - 1) {
+									iface = col;
+									continue;
+								}
+							}
 
-								if (ip.length > 0) {
-									const js = {};
-									js.ip = ip;
-									js.mac = mac;
-									js.iface = iface;
+							if (ip.length) {
+								const arpEntry = { ip, mac, iface };
 
-									if (node.macs) {
-										if (node.macs.toLowerCase().indexOf(mac) >= 0) {
-											json.push(js);
-										}
-									} else {
-										json.push(js);
+								if (node.macs) {
+									if (node.macs.toLowerCase().includes(mac)) {
+										arpEntries.push(arpEntry);
 									}
-
-
+								} else {
+									arpEntries.push(arpEntry);
 								}
 							}
 						}
 
-						msg.payload = json;
-
+						msg.payload = arpEntries;
 						return node.send(msg);
 					}
 
