@@ -1,8 +1,8 @@
 
 module.exports = function(RED) {
 	"use strict";
-	var os = require('os');
-	var exec = require('child_process').exec;	
+	const os = require('os');
+	const exec = require('child_process').exec;	
 	
 	function PromiseFunc() {
 		this.execCommand = function(cmd) {
@@ -22,13 +22,13 @@ module.exports = function(RED) {
 		RED.nodes.createNode(this, n);
 		this.name = n.name;
 		this.macs = n.macs;
-		var node = this;
+		let node = this;
 
 		node.on("input", function(msg) {
 			if (msg && msg.payload) {
 				node.macs = msg.payload.macs || node.macs;
 
-				var interfaces = os.networkInterfaces();
+				const interfaces = os.networkInterfaces();
 
 				Object.keys(interfaces).forEach(function(inter) {
 
@@ -36,7 +36,7 @@ module.exports = function(RED) {
 						
 						if (!details.internal && details.family==='IPv4') {
 							
-							var ping = 'echo $(seq 254) | xargs -P255 -I% -d" " ping -W 1 -c 1 ';
+							let ping = 'echo $(seq 254) | xargs -P255 -I% -d" " ping -W 1 -c 1 ';
 							ping += details.address.substr(0, details.address.lastIndexOf('.')+1) + '%';
 							ping += ' | grep -E "[0-1].*?:"';
 							
@@ -52,22 +52,22 @@ module.exports = function(RED) {
 
 				});
 				
-				var execF = new PromiseFunc();
+				const execF = new PromiseFunc();
 				execF.execCommand('arp -n').then(function(res) {
 					node.status({fill:"green",shape:"dot",text:"finished"});
 					if(res && res.length>0) {
-						var json = [];
-						var lines = res.split('\n');
+						const json = [];
+						const lines = res.split('\n');
 						
-						for ( var i in lines) {
+						for ( const i in lines) {
 							if(i==0) continue;
 							if(lines[i].indexOf('incomplete')<0) {
-								var cols = lines[i].split(' ');
-								var ip = '';
-								var mac = '';
-								var iface = '';
+								const cols = lines[i].split(' ');
+								let ip = '';
+								let mac = '';
+								let iface = '';
 								
-								for(var j in cols) {
+								for(const j in cols) {
 									if(cols[j].indexOf('.')>=0) {
 										ip = cols[j];
 										continue;
@@ -83,7 +83,7 @@ module.exports = function(RED) {
 								}
 								
 								if(ip.length>0) {
-									var js = {};
+									const js = {};
 									js.ip = ip;
 									js.mac = mac;
 									js.iface = iface;
