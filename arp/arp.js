@@ -5,17 +5,17 @@ module.exports = function(RED) {
 	var exec = require('child_process').exec;	
 	
 	function PromiseFunc() {
-	    this.execCommand = function (cmd) {
-	        return new Promise(function(resolve, reject) {
-	           exec(cmd, function(error, stdout, stderr) {
-	             if (error) {
-	                reject(error);
-	                return;
-	            }
-	            resolve(stdout)
-	           });
-	       });
-	   }
+		this.execCommand = function(cmd) {
+			return new Promise(function(resolve, reject) {
+				exec(cmd, function(error, stdout, stderr) {
+					if (error) {
+						reject(error);
+						return;
+					}
+					resolve(stdout)
+				});
+			});
+		}
 	};
 		
 	function ARP(n) {
@@ -43,11 +43,10 @@ module.exports = function(RED) {
 							node.status({fill:"yellow",shape:"dot",text:"running"});
 							
 							exec(ping, function(error, stdout, stderr) {
-					             if (error) {
-					                return;
-					            }
-					        });
-							
+								if (error) {
+									return;
+								}
+							});
 						}
 					});
 
