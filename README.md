@@ -3,6 +3,10 @@
 This node provides the content of the ARP table.<br>
 It returns the mapping of the network address (IP address) to a physical address (MAC address) of the devices which are connected to the same LAN.
 
+### Prerequisites
+
+- Node.js v8.10 or later
+
 ### Install
 
 From your node-red directory:
