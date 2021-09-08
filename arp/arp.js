@@ -1,8 +1,8 @@
 module.exports = function(RED) {
 	"use strict";
 	
-	const os = require('os');
-	const exec = require('child_process').exec;
+	const os = require("os");
+	const exec = require("child_process").exec;
 
 	function PromiseFunc() {
 		this.execCommand = function(cmd) {
@@ -34,10 +34,10 @@ module.exports = function(RED) {
 
 					interfaces[inter].forEach(function(details) {
 
-						if (!details.internal && details.family === 'IPv4') {
+						if (!details.internal && details.family === "IPv4") {
 
 							let ping = 'echo $(seq 254) | xargs -P255 -I% -d" " ping -W 1 -c 1 ';
-							ping += details.address.substr(0, details.address.lastIndexOf('.') + 1) + '%';
+							ping += details.address.substr(0, details.address.lastIndexOf(".") + 1) + '%';
 							ping += ' | grep -E "[0-1].*?:"';
 
 							node.status({ fill: "yellow", shape: "dot", text: "running" });
@@ -53,7 +53,7 @@ module.exports = function(RED) {
 				});
 
 				const execF = new PromiseFunc();
-				execF.execCommand('arp -n').then(function(res) {
+				execF.execCommand("arp -n").then(function(res) {
 					node.status({ fill: "green", shape: "dot", text: "finished" });
 					if (res && res.length > 0) {
 						const json = [];
@@ -61,14 +61,14 @@ module.exports = function(RED) {
 
 						for (const i in lines) {
 							if (i == 0) continue;
-							if (lines[i].indexOf('incomplete') < 0) {
-								const cols = lines[i].split(' ');
-								let ip = '';
-								let mac = '';
-								let iface = '';
+							if (lines[i].indexOf("incomplete") < 0) {
+								const cols = lines[i].split(" ");
+								let ip = "";
+								let mac = "";
+								let iface = "";
 
 								for (const j in cols) {
-									if (cols[j].indexOf('.') >= 0) {
+									if (cols[j].indexOf(".") >= 0) {
 										ip = cols[j];
 										continue;
 									}
