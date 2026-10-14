@@ -61,20 +61,21 @@ module.exports = function(RED) {
 						var lines = res.split('\n');
 						
 						for ( var i in lines) {
-							if(i==0) continue;
-							if(lines[i].indexOf('incomplete')<0) {
-								var cols = lines[i].split(' ');
+							var line = String(lines[i] === undefined ? "" : lines[i]).trim();
+							if(line.length === 0 || line.indexOf("Address") >= 0) continue;
+							if(line.indexOf('incomplete')<0) {
+								var cols = line.split(' ');
 								var ip = '';
 								var mac = '';
 								var iface = '';
 								
 								for(var j in cols) {
 									if(cols[j].indexOf('.')>=0) {
-										ip = cols[j];
+										ip = cols[j].replace(/[()]/g,'');
 										continue;
 									}
 									if(cols[j].indexOf(':')>=0) {
-										mac = cols[j];
+										mac = cols[j].toLowerCase();
 										continue;
 									}
 									if(j==cols.length-1) {
